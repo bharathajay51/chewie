@@ -161,47 +161,82 @@ class _MaterialControlsState extends State<MaterialControls> {
 
   Expanded _buildHitArea() {
     return Expanded(
-      child: GestureDetector(
-        onTap: () {
-          if (_latestValue != null && _latestValue.isPlaying) {
-            if (_displayTapped) {
-              setState(() {
-                _hideStuff = true;
-              });
-            } else
-              _cancelAndRestartTimer();
-          } else {
-            _playPause();
+      child: Row(
+        children: [
+          GestureDetector(
+            onTap: () {
+              if (_latestValue != null && _latestValue.isPlaying) {
+                if (_displayTapped) {
+                  setState(() {
+                    _hideStuff = true;
+                  });
+                } else
+                  _cancelAndRestartTimer();
+              } else {
+                _playPause();
 
-            setState(() {
-              _hideStuff = true;
-            });
-          }
-        },
-        child: Container(
-          color: Colors.transparent,
-          child: Center(
-            child: AnimatedOpacity(
-              opacity:
-                  _latestValue != null && !_latestValue.isPlaying && !_dragging
+                setState(() {
+                  _hideStuff = true;
+                });
+              }
+            },
+            child: Container(
+              color: Colors.transparent,
+              child: Center(
+                child: AnimatedOpacity(
+                  opacity: _latestValue != null &&
+                          !_latestValue.isPlaying &&
+                          !_dragging
                       ? 1.0
                       : 0.0,
-              duration: Duration(milliseconds: 300),
-              child: GestureDetector(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).dialogBackgroundColor,
-                    borderRadius: BorderRadius.circular(48.0),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.all(12.0),
-                    child: Icon(Icons.play_arrow, size: 32.0),
+                  duration: Duration(milliseconds: 300),
+                  child: GestureDetector(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).dialogBackgroundColor,
+                        borderRadius: BorderRadius.circular(48.0),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(12.0),
+                        child: Icon(Icons.play_arrow, size: 32.0),
+                      ),
+                    ),
                   ),
                 ),
               ),
             ),
           ),
-        ),
+          GestureDetector(
+            onTap: () {
+              print('fast forward pressed');
+            },
+            child: Container(
+              color: Colors.transparent,
+              child: Center(
+                child: AnimatedOpacity(
+                  opacity: _latestValue != null &&
+                          !_latestValue.isPlaying &&
+                          !_dragging
+                      ? 1.0
+                      : 0.0,
+                  duration: Duration(milliseconds: 300),
+                  child: GestureDetector(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).dialogBackgroundColor,
+                        borderRadius: BorderRadius.circular(48.0),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(12.0),
+                        child: Icon(Icons.fast_forward, size: 25.0),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -324,12 +359,9 @@ class _MaterialControlsState extends State<MaterialControls> {
 
   void _playPause() {
     bool isFinished;
-    if( _latestValue.duration != null)
-    {
+    if (_latestValue.duration != null) {
       isFinished = _latestValue.position >= _latestValue.duration;
-    }
-    else
-    {
+    } else {
       isFinished = false;
     }
 
